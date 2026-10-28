@@ -1,23 +1,23 @@
 exports.getAllUsers = (req, res) => {
   console.log(req.query.enabled)
-  console.log("Accediendo a todos los usuarios")
+  res.status(200).send("Accediendo a todos los usuarios")
 }
 exports.getUser = (req, res) => {
-  console.log("Accediendo al usuario con Id: " + req.params.id)
+  res.status(201).send("Accediendo al usuario con Id: " + req.params.id)
 }
 
 exports.createUser = (req, res) => {
   let data = req.body
   const { nombre, apellido, email, telefono } = data
-  console.log(nombre, apellido, email, telefono)
+  res.send(nombre, apellido, email, telefono)
 }
 exports.updateUser = (req, res) => {
   let data = req.body
   const { nombre, apellido, email, telefono } = data
-  console.log(req.params.id)
-  console.log(nombre,apellido, email,telefono)
+  res.send(req.params.id)
+  res.send(nombre,apellido, email,telefono)
 }
 exports.deleteUser = (req, res) => {
-  console.log(req.params.id)
-  console.log("id eliminado")
+  res.send(req.params.id)
+  res.send("id eliminado")
 }
