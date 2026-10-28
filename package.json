@@ -1,0 +1,17 @@
+{
+  "name": "node50226",
+  "version": "1.0.0",
+  "description": "proyecto de node.js",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "author": "Jack Tejada",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
