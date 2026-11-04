@@ -6,7 +6,8 @@ const categoriaRouter = require('./routers/categoriaRouters')
 const clienteRouter = require('./routers/clienteRouters')
 const pedidoRouter = require('./routers/pedidoRouters')
 const path = require('path')
-const connection=require('./database/connection')
+const connection = require('./database/connection')
+const authRouter=require('./routers/authRouter')
 
 
 app.set('views', path.join(__dirname, 'views'))
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 
 app.use(express.json())
 
+app.use('/auth', authRouter)
 app.use('/users', userRouter)
 app.use('/productos', productoRouter)
 app.use('/categorias', categoriaRouter)
