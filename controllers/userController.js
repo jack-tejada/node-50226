@@ -1,23 +1,68 @@
-exports.getAllUsers = (req, res) => {
-  console.log(req.query.enabled)
-  res.status(200).send("Accediendo a todos los usuarios")
+
+const UserService = require('../services/userService')
+const mongoose = require('mongoose')
+const userService = new UserService()
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await userService.getAll()
+    res.status(200).json(users)
+  } catch (error) {
+    res.status(500).json({ "error": error.message })
+  }
 }
-exports.getUser = (req, res) => {
-  res.status(201).send("Accediendo al usuario con Id: " + req.params.id)
+exports.getUser = async (req, res) => {
+  try {
+    const id = req.params.id
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ "message": "Id invalido" })
+    }
+    const user = await userService.filterById(id)
+    if (!user) {
+      return res.status(404).json({ "message": "Usuario no encontrado" })
+    }
+    res.status(200).json(user)
+  } catch (error) {
+    res.status(500).json({ "error": error.message })
+  }
 }
 
-exports.createUser = (req, res) => {
-  let data = req.body
-  const { nombre, apellido, email, telefono } = data
-  res.send(nombre, apellido, email, telefono)
+exports.createUser = async (req, res) => {
+  try {
+    let data = req.body
+    await userService.create(data)
+    res.status(201).send('Usuario Registrado')
+  } catch (error) {
+    res.status(500).json({ "error": error.message })
+  }
 }
-exports.updateUser = (req, res) => {
-  let data = req.body
-  const { nombre, apellido, email, telefono } = data
-  res.send(req.params.id)
-  res.send(nombre,apellido, email,telefono)
+exports.updateUser = async (req, res) => {
+  try {
+    const id = req.params.id
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ "message": "Id invalido" })
+    }
+    const user = await userService.updateById(id, req.body)
+    if (!user) {
+      return res.status(404).json({ "message": "Usuario no encontrado" })
+    }
+    res.status(200).json(user)
+  } catch (error) {
+    res.status(500).json({ "error": error.message })
+  }
 }
-exports.deleteUser = (req, res) => {
-  res.send(req.params.id)
-  res.send("id eliminado")
+exports.deleteUser = async (req, res) => {
+  try {
+    const id = req.params.id
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ "message": "Id invalido" })
+    }
+    const user = await userService.deleteById(id)
+    if (!user) {
+      return res.status(404).json({ "message": "Usuario no encontrado" })
+    }
+    res.status(200).json({ "message": "Usuario eliminado", "user": user })
+  } catch (error) {
+    res.status(500).json({ "error": error.message })
+  }
 }
