@@ -1,6 +1,10 @@
 const express = require('express')
 const app = express()
 const userRouter = require('./routers/userRouters')
+const productoRouter = require('./routers/productoRouters')
+const categoriaRouter = require('./routers/categoriaRouters')
+const clienteRouter = require('./routers/clienteRouters')
+const pedidoRouter = require('./routers/pedidoRouters')
 const path = require('path')
 const connection=require('./database/connection')
 
@@ -20,11 +24,11 @@ app.get('/', (req, res) => {
 
 app.use(express.json())
 
-app.get('/', (req, res) => {
-    console.log("servidor creado con express")
-    res.send("Servidor creado con Express")
-})
 app.use('/users', userRouter)
+app.use('/productos', productoRouter)
+app.use('/categorias', categoriaRouter)
+app.use('/clientes', clienteRouter)
+app.use('/pedidos', pedidoRouter)
 
 app.listen(3000, () => {
     console.log("aplicacion con express ejecutandose en el puerto 3000")
