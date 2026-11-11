@@ -5,52 +5,200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
+        :root {
+            --bg: #f9f8f6;
+            --surface: #ffffff;
+            --border: #dadde2;
+            --border-strong: #c0c3ca;
+            --text-high: #0d0d0f;
+            --text: #35383f;
+            --text-muted: #626976;
+            --accent: #1348dc;
+            --accent-hover: #0b3ec7;
+            --accent-bevel: hsl(219, 93%, 30%);
+            --sh-zed: 6px 6px 0 rgba(7, 77, 207, 0.055), -6px -6px 0 rgba(7, 77, 207, 0.035);
+            --serif: "IBM Plex Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+            --mono: ui-monospace, SFMono-Regular, "Cascadia Code", Menlo, Consolas, monospace;
+        }
         * { box-sizing: border-box; }
+        ::selection { color: #201e13; background-color: #eceadf; }
+
         body {
             margin: 0;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: #eef2f7;
-            font-family: system-ui, -apple-system, sans-serif;
-            color: #1f2937;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--mono);
+            letter-spacing: -0.015em;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            overflow-x: hidden;
         }
+
+        /* Lineas arquitectonicas verticales y horizontales estilo zed.dev */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(to right, var(--border) 1px, transparent 1px) 48px 0 / calc(100% - 96px) 100% no-repeat,
+                linear-gradient(to left, var(--border) 1px, transparent 1px) 48px 0 / calc(100% - 96px) 100% no-repeat,
+                linear-gradient(to bottom, var(--border) 1px, transparent 1px) 0 56px / 100% calc(100% - 112px) no-repeat,
+                linear-gradient(to top, var(--border) 1px, transparent 1px) 0 56px / 100% calc(100% - 112px) no-repeat;
+            z-index: 0;
+        }
+
+        /* Reticula milimetrica central sutil y lineas guia laterales punteadas */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 56px;
+            bottom: 56px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(920px, calc(100% - 96px));
+            pointer-events: none;
+            border-left: 1px dashed var(--border);
+            border-right: 1px dashed var(--border);
+            background-image:
+                linear-gradient(to right, rgba(19, 72, 220, 0.028) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(19, 72, 220, 0.028) 1px, transparent 1px);
+            background-size: 12px 12px;
+            z-index: 0;
+        }
+
         .caja {
+            position: relative;
+            z-index: 1;
             width: 100%;
-            max-width: 360px;
+            max-width: 384px;
             margin: 16px;
-            background: #fff;
-            padding: 32px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+            background: var(--surface);
+            padding: 36px 32px 32px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            box-shadow: var(--sh-zed);
         }
-        h1 { margin: 0 0 4px; font-size: 24px; }
-        .subtitulo { margin: 0 0 24px; color: #6b7280; font-size: 14px; }
-        label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; }
+
+        /* Nodos diamante en las esquinas de la tarjeta */
+        .caja::after {
+            content: "";
+            position: absolute;
+            inset: -4px;
+            pointer-events: none;
+            background:
+                linear-gradient(45deg, var(--border-strong) 0 100%) top left / 6px 6px no-repeat,
+                linear-gradient(45deg, var(--border-strong) 0 100%) top right / 6px 6px no-repeat,
+                linear-gradient(45deg, var(--border-strong) 0 100%) bottom left / 6px 6px no-repeat,
+                linear-gradient(45deg, var(--border-strong) 0 100%) bottom right / 6px 6px no-repeat;
+            opacity: 0.75;
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            font-family: var(--serif);
+            font-size: 26px;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: var(--text-high);
+            text-align: center;
+        }
+
+        .subtitulo {
+            margin: 0 0 24px;
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.5;
+            text-align: center;
+            padding-bottom: 18px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-high);
+            letter-spacing: -0.01em;
+        }
+
         input {
             width: 100%;
-            padding: 10px 12px;
+            padding: 8px 12px;
             margin-bottom: 16px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 15px;
+            background: var(--surface);
+            border: 1px solid #ced1d6;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+            font-family: var(--mono);
+            font-size: 13.5px;
+            color: var(--text-high);
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
-        input:focus { outline: 2px solid #2563eb; border-color: transparent; }
+        input::placeholder { color: #878e9b; }
+        input:hover { border-color: #abafb8; }
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent);
+        }
+
+        /* Boton primario identico a zed.dev (con bisel inferior) */
         button {
             width: 100%;
-            padding: 11px;
-            border: 0;
-            border-radius: 8px;
-            background: #2563eb;
-            color: #fff;
-            font-size: 15px;
-            font-weight: 600;
+            height: 38px;
+            margin-top: 4px;
+            padding: 0 12px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            background: var(--accent);
+            color: #ffffff;
+            font-family: var(--mono);
+            font-size: 13.5px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--accent-bevel) 0 -2px 0 0 inset, hsl(219, 93%, 95%) 0 1px 3px 0;
+            transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
         }
-        button:hover { background: #1d4ed8; }
-        button:disabled { background: #93c5fd; cursor: default; }
-        #mensaje { min-height: 20px; margin: 12px 0 0; color: #dc2626; font-size: 14px; text-align: center; }
+        button:hover:not(:disabled) {
+            background: var(--accent-hover);
+            box-shadow: none;
+        }
+        button:active:not(:disabled) {
+            transform: translateY(1px) scale(0.99);
+            box-shadow: none;
+        }
+        button:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #mensaje {
+            min-height: 20px;
+            margin: 14px 0 0;
+            color: #bf000f;
+            font-size: 12px;
+            text-align: center;
+            line-height: 1.4;
+        }
+        #mensaje:not(:empty) {
+            padding: 8px 10px;
+            background: #ffe2e2;
+            border: 1px solid #ffcaca;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -59,10 +207,10 @@
         <p class="subtitulo">Panel del administrador</p>
 
         <label for="email">Correo</label>
-        <input type="email" id="email" placeholder="admin@tienda.com" autocomplete="email" required>
+        <input type="email" id="email" placeholder="Correo" autocomplete="email" required>
 
         <label for="password">Contraseña</label>
-        <input type="password" id="password" placeholder="Tu contraseña" autocomplete="current-password" required>
+        <input type="password" id="password" placeholder="Contraseña" autocomplete="current-password" required>
 
         <button type="submit" id="boton">Entrar</button>
         <p id="mensaje"></p>

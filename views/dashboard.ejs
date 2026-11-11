@@ -5,51 +5,169 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel</title>
     <style>
+        :root {
+            --bg: #f9f8f6;
+            --surface: #ffffff;
+            --border: #dadde2;
+            --border-strong: #c0c3ca;
+            --text-high: #0d0d0f;
+            --text: #35383f;
+            --text-muted: #626976;
+            --accent: #1348dc;
+            --sh-zed: 6px 6px 0 rgba(7, 77, 207, 0.055), -6px -6px 0 rgba(7, 77, 207, 0.035);
+            --serif: "IBM Plex Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+            --mono: ui-monospace, SFMono-Regular, "Cascadia Code", Menlo, Consolas, monospace;
+        }
         * { box-sizing: border-box; }
+        ::selection { color: #201e13; background-color: #eceadf; }
+
         body {
             margin: 0;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: #eef2f7;
-            font-family: system-ui, -apple-system, sans-serif;
-            color: #1f2937;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--mono);
+            letter-spacing: -0.015em;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            overflow-x: hidden;
         }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(to right, var(--border) 1px, transparent 1px) 48px 0 / calc(100% - 96px) 100% no-repeat,
+                linear-gradient(to left, var(--border) 1px, transparent 1px) 48px 0 / calc(100% - 96px) 100% no-repeat,
+                linear-gradient(to bottom, var(--border) 1px, transparent 1px) 0 56px / 100% calc(100% - 112px) no-repeat,
+                linear-gradient(to top, var(--border) 1px, transparent 1px) 0 56px / 100% calc(100% - 112px) no-repeat;
+            z-index: 0;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 56px;
+            bottom: 56px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(920px, calc(100% - 96px));
+            pointer-events: none;
+            border-left: 1px dashed var(--border);
+            border-right: 1px dashed var(--border);
+            background-image:
+                linear-gradient(to right, rgba(19, 72, 220, 0.028) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(19, 72, 220, 0.028) 1px, transparent 1px);
+            background-size: 12px 12px;
+            z-index: 0;
+        }
+
         .caja {
+            position: relative;
+            z-index: 1;
             width: 100%;
-            max-width: 360px;
+            max-width: 396px;
             margin: 16px;
-            background: #fff;
-            padding: 32px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+            background: var(--surface);
+            padding: 36px 32px 32px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            box-shadow: var(--sh-zed);
             text-align: center;
         }
-        h1 { margin: 0 0 4px; font-size: 24px; }
-        .subtitulo { margin: 0 0 20px; color: #6b7280; font-size: 14px; }
+
+        .caja::after {
+            content: "";
+            position: absolute;
+            inset: -4px;
+            pointer-events: none;
+            background:
+                linear-gradient(45deg, var(--border-strong) 0 100%) top left / 6px 6px no-repeat,
+                linear-gradient(45deg, var(--border-strong) 0 100%) top right / 6px 6px no-repeat,
+                linear-gradient(45deg, var(--border-strong) 0 100%) bottom left / 6px 6px no-repeat,
+                linear-gradient(45deg, var(--border-strong) 0 100%) bottom right / 6px 6px no-repeat;
+            opacity: 0.75;
+        }
+
+        h1 {
+            margin: 0 0 4px;
+            font-family: var(--serif);
+            font-size: 26px;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: var(--text-high);
+        }
+
+        .subtitulo {
+            margin: 0 0 18px;
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
         .email {
-            margin: 0 0 20px;
-            padding: 12px;
-            background: #eff6ff;
-            border-radius: 8px;
-            color: #1d4ed8;
-            font-weight: 600;
+            margin: 0 0 18px;
+            padding: 16px 14px;
+            background-color: #fcfcfa;
+            background-image:
+                linear-gradient(to right, rgba(19, 72, 220, 0.045) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(19, 72, 220, 0.045) 1px, transparent 1px);
+            background-size: 8px 8px;
+            border: 1px solid #ced1d6;
+            border-radius: 3px;
+            box-shadow: 4px 4px 0 rgba(7, 77, 207, 0.045);
+            color: var(--accent);
+            font-family: var(--mono);
+            font-size: 13.5px;
+            font-weight: 500;
             word-break: break-all;
         }
-        .nota { margin: 0 0 20px; color: #6b7280; font-size: 13px; }
+
+        .nota {
+            margin: 0 0 22px;
+            padding-top: 16px;
+            border-top: 1px dashed var(--border);
+            color: var(--text-muted);
+            font-size: 12.5px;
+            line-height: 1.5;
+        }
+
         button {
             width: 100%;
-            padding: 11px;
-            border: 0;
-            border-radius: 8px;
-            background: #2563eb;
-            color: #fff;
-            font-size: 15px;
-            font-weight: 600;
+            height: 38px;
+            padding: 0 12px;
+            border: 1px solid #ced1d6;
+            border-radius: 4px;
+            background: var(--surface);
+            color: var(--text-high);
+            font-family: var(--mono);
+            font-size: 13.5px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: rgba(114, 122, 137, 0.18) 0 -2px 0 0 inset, rgba(0, 0, 0, 0.04) 0 1px 2px 0;
+            transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
         }
-        button:hover { background: #1d4ed8; }
+        button:hover {
+            background: #f9f8f6;
+            border-color: #abafb8;
+            box-shadow: none;
+        }
+        button:active {
+            transform: translateY(1px) scale(0.99);
+            box-shadow: none;
+        }
     </style>
 </head>
 <body>
