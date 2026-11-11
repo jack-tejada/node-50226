@@ -1,21 +1,29 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi página</title>
+    <title>Mi pagina</title>
 </head>
 <body>
-    <% if (showMessage) { %>
-        <h1><%= message %></h1>
-    <% } else { %>
-        <h1>Este es un mensaje por defecto</h1>
-    <% } %>
+    <div id="chat">
+        <input type="text" id="username" placeholder="Ingrese su nombre de Usuario">
+    </div>
 
-    <ul>
-        <% for (let i = 0; i < items.length; i++) { %>
-            <li><%= items[i] %></li>
-        <% } %>
-    </ul>
+    <div id="messages">
+        <div class="message">JackTejada:Hola</div>
+        <div class="message">JackTejada:Hola</div>
+    </div>
+
+    <div id="writing">
+
+    </div>
+
+    <textarea id="write-message" placeholder="Ingrese su Mensaje"></textarea>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io()
+    </script>
 </body>
 </html>
