@@ -34,3 +34,12 @@ exports.login = async(req,res) =>{
         res.status(500).json({"error":error.message})
     }
 }
+
+exports.refresh = (req,res) =>{
+    try {
+        const token = authService.refreshToken(req.body.token)
+        res.status(200).send(token)
+    } catch (error) {
+        res.status(401).json({"error":error.message})
+    }
+}

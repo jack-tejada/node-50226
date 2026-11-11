@@ -23,6 +23,14 @@ app.get('/', (req, res) => {
     res.render('index', data)
 })
 
+app.get('/login', (req, res) => {
+    res.render('login')
+})
+
+app.get('/panel', (req, res) => {
+    res.render('dashboard')
+})
+
 app.use(express.json())
 
 app.use('/auth', authRouter)

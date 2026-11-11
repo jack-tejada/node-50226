@@ -16,8 +16,12 @@ class AuthService {
         return userAuth
   }
   generateToken(payload) {
-    const token = jwt.sign(payload, 'secret-key')
+    const token = jwt.sign(payload, 'secret-key', {expiresIn:'1m'})
     return token
+  }
+  refreshToken(token) {
+    const payload = jwt.verify(token, 'secret-key', {ignoreExpiration:true})
+    return this.generateToken({email:payload.email})
   }
 }
 

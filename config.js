@@ -7,6 +7,6 @@ module.exports = {
     port:27017
   },
   jwt: {
-    secret: 'clave_secreta_node50226'
+    secret: 'secret-key'
   }
 }

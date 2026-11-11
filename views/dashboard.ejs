@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel</title>
+</head>
+<body>
+    <h1>Panel</h1>
+    <p id="mensaje"></p>
+    <button id="salir">Cerrar sesión</button>
+
+    <script>
+        const token = localStorage.getItem('token')
+        if (!token) {
+            location.href = '/login'
+        } else {
+            cargarDashboard(token)
+        }
+
+        async function cargarDashboard(token) {
+            const respuesta = await fetch('/dashboard', {
+                headers: { Authorization: 'Bearer ' + token }
+            })
+            if (respuesta.status === 401) {
+                const refresh = await fetch('/auth/refresh', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token })
+                })
+                if (!refresh.ok) {
+                    localStorage.removeItem('token')
+                    location.href = '/login'
+                    return
+                }
+                const nuevoToken = await refresh.text()
+                localStorage.setItem('token', nuevoToken)
+                return cargarDashboard(nuevoToken)
+            }
+            document.getElementById('mensaje').textContent = await respuesta.text()
+        }
+
+        document.getElementById('salir').addEventListener('click', () => {
+            localStorage.removeItem('token')
+            location.href = '/login'
+        })
+    </script>
+</body>
+</html>
