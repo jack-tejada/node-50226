@@ -5,5 +5,8 @@ module.exports = {
     password: '',
     database: 'mydb02',
     port:27017
+  },
+  jwt: {
+    secret: 'clave_secreta_node50226'
   }
 }

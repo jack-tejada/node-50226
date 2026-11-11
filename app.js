@@ -8,7 +8,7 @@ const pedidoRouter = require('./routers/pedidoRouters')
 const path = require('path')
 const connection = require('./database/connection')
 const authRouter=require('./routers/authRouter')
-
+const dashboardRouter=require('./routers/dashboardRouter')
 
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
@@ -31,6 +31,7 @@ app.use('/productos', productoRouter)
 app.use('/categorias', categoriaRouter)
 app.use('/clientes', clienteRouter)
 app.use('/pedidos', pedidoRouter)
+app.use('/dashboard',dashboardRouter)
 
 app.listen(3000, () => {
     console.log("aplicacion con express ejecutandose en el puerto 3000")
